@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { fakeItems } from "../../data";
 
-const MarketList = () => {
+const TodoArray = () => {
   const [items, setItems] = useState([]);
   const [isEditItem, setIsEditItem] = useState({});
 
@@ -91,14 +91,15 @@ const MarketList = () => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           ref={inputRef}
-          disabled={isEditItem.edit}
+          disabled={isEditItem?.edit}
         />
         <button type="submit" disabled={isEditItem?.edit}>
           add
         </button>
       </form>
 
-      {items?.length <= 0 && <p>no item...👀</p>}
+      <br />
+      {items?.length <= 0 && <p>Nenhum item... 👀</p>}
 
       <ul>
         {items?.map((item, idx) => (
@@ -149,7 +150,7 @@ const MarketList = () => {
   );
 };
 
-export default MarketList;
+export default TodoArray;
 
 const Container = styled.div`
   width: 100%;
