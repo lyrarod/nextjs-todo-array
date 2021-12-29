@@ -9,7 +9,7 @@ const getItemsLocalStorage = () => {
 };
 
 const TodoArray = () => {
-  const [items, setItems] = useState();
+  const [items, setItems] = useState(null);
   const [isEditItem, setIsEditItem] = useState({});
 
   const [value, setValue] = useState("");
