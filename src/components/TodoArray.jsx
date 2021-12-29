@@ -3,11 +3,6 @@ import styled from "styled-components";
 
 import { fakeItems } from "../../data";
 
-const getItemsLocalStorage = () => {
-  const data = localStorage.getItem("items");
-  return data ? JSON.parse(data) : fakeItems;
-};
-
 const TodoArray = () => {
   const [items, setItems] = useState(null);
   const [isEditItem, setIsEditItem] = useState({});
@@ -17,6 +12,10 @@ const TodoArray = () => {
   const updateRef = useRef();
 
   useEffect(() => {
+    const getItemsLocalStorage = () => {
+      const data = localStorage.getItem("items");
+      return data ? JSON.parse(data) : fakeItems;
+    };
     const data = getItemsLocalStorage();
     setItems(data);
   }, []);
