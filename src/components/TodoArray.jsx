@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { fakeItems } from "../../data";
 
 const TodoArray = () => {
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState();
   const [isEditItem, setIsEditItem] = useState({});
 
   const [value, setValue] = useState("");
@@ -99,7 +99,7 @@ const TodoArray = () => {
 
       <ul>
         {items?.length > 0 &&
-          items.map((item, idx) => {
+          items?.map((item, idx) => {
             return (
               <div key={idx}>
                 {isEditItem?.edit && isEditItem?.id === idx ? (
