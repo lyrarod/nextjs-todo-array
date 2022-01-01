@@ -6,6 +6,7 @@ import { fakeItems } from "../../data";
 const TodoArray = () => {
   const [items, setItems] = useState([]);
   const [isEditItem, setIsEditItem] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const [value, setValue] = useState("");
   const inputRef = useRef();
@@ -18,6 +19,12 @@ const TodoArray = () => {
     };
     const data = getItemsLocalStorage();
     setItems(data);
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -98,58 +105,66 @@ const TodoArray = () => {
       </form>
 
       <ul>
-        {items?.map((item, idx) => {
-          return (
-            <div key={idx}>
-              {isEditItem?.edit && isEditItem?.id === idx ? (
-                <input
-                  value={isEditItem.text}
-                  onChange={(e) =>
-                    setIsEditItem({
-                      id: idx,
-                      text: e.target.value,
-                      edit: true,
-                    })
-                  }
-                  autoFocus
-                  placeholder={"edit item..."}
-                  ref={updateRef}
-                  style={{ width: "100%" }}
-                />
-              ) : (
-                <li>{`${item}`}</li>
-              )}
-
-              <div>
-                <button
-                  onClick={() => deleteItem(idx, item)}
-                  disabled={isEditItem?.edit}
-                >
-                  deletar
-                </button>
+        {!loading &&
+          items?.length > 0 &&
+          items?.map((item, idx) => {
+            return (
+              <div key={idx}>
                 {isEditItem?.edit && isEditItem?.id === idx ? (
-                  <button onClick={() => updateItem(idx)}>salvar</button>
+                  <input
+                    value={isEditItem.text}
+                    onChange={(e) =>
+                      setIsEditItem({
+                        id: idx,
+                        text: e.target.value,
+                        edit: true,
+                      })
+                    }
+                    autoFocus
+                    placeholder={"edit item..."}
+                    ref={updateRef}
+                    style={{ width: "100%" }}
+                  />
                 ) : (
+                  <li>{`${item}`}</li>
+                )}
+
+                <div>
                   <button
-                    onClick={() => editItem(idx)}
+                    onClick={() => deleteItem(idx, item)}
                     disabled={isEditItem?.edit}
                   >
-                    editar
+                    deletar
                   </button>
-                )}
-                <button
-                  onClick={() => console.log("COMPLETE:", idx, item)}
-                  disabled={isEditItem?.edit}
-                >
-                  comprado
-                </button>
+                  {isEditItem?.edit && isEditItem?.id === idx ? (
+                    <button onClick={() => updateItem(idx)}>salvar</button>
+                  ) : (
+                    <button
+                      onClick={() => editItem(idx)}
+                      disabled={isEditItem?.edit}
+                    >
+                      editar
+                    </button>
+                  )}
+                  <button
+                    onClick={() => console.log("COMPLETE:", idx, item)}
+                    disabled={isEditItem?.edit}
+                  >
+                    comprado
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </ul>
 
-      {items?.length < 1 && <p>Nenhum item... 👀</p>}
+      {loading && (
+        <p>
+          <em>Loading... </em>⏳
+        </p>
+      )}
+
+      {!loading && items?.length < 1 && <p>Nenhum item... 👀</p>}
     </Container>
   );
 };
