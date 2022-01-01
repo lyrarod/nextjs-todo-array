@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { fakeItems } from "../../data";
 
 const TodoArray = () => {
-  const [items, setItems] = useState();
+  const [items, setItems] = useState([]);
   const [isEditItem, setIsEditItem] = useState({});
 
   const [value, setValue] = useState("");
@@ -98,56 +98,55 @@ const TodoArray = () => {
       </form>
 
       <ul>
-        {items?.length > 0 &&
-          items?.map((item, idx) => {
-            return (
-              <div key={idx}>
-                {isEditItem?.edit && isEditItem?.id === idx ? (
-                  <input
-                    value={isEditItem.text}
-                    onChange={(e) =>
-                      setIsEditItem({
-                        id: idx,
-                        text: e.target.value,
-                        edit: true,
-                      })
-                    }
-                    autoFocus
-                    placeholder={"edit item..."}
-                    ref={updateRef}
-                    style={{ width: "100%" }}
-                  />
-                ) : (
-                  <li>{`${item}`}</li>
-                )}
+        {items?.map((item, idx) => {
+          return (
+            <div key={idx}>
+              {isEditItem?.edit && isEditItem?.id === idx ? (
+                <input
+                  value={isEditItem.text}
+                  onChange={(e) =>
+                    setIsEditItem({
+                      id: idx,
+                      text: e.target.value,
+                      edit: true,
+                    })
+                  }
+                  autoFocus
+                  placeholder={"edit item..."}
+                  ref={updateRef}
+                  style={{ width: "100%" }}
+                />
+              ) : (
+                <li>{`${item}`}</li>
+              )}
 
-                <div>
+              <div>
+                <button
+                  onClick={() => deleteItem(idx, item)}
+                  disabled={isEditItem?.edit}
+                >
+                  deletar
+                </button>
+                {isEditItem?.edit && isEditItem?.id === idx ? (
+                  <button onClick={() => updateItem(idx)}>salvar</button>
+                ) : (
                   <button
-                    onClick={() => deleteItem(idx, item)}
+                    onClick={() => editItem(idx)}
                     disabled={isEditItem?.edit}
                   >
-                    deletar
+                    editar
                   </button>
-                  {isEditItem?.edit && isEditItem?.id === idx ? (
-                    <button onClick={() => updateItem(idx)}>salvar</button>
-                  ) : (
-                    <button
-                      onClick={() => editItem(idx)}
-                      disabled={isEditItem?.edit}
-                    >
-                      editar
-                    </button>
-                  )}
-                  <button
-                    onClick={() => console.log("COMPLETE:", idx, item)}
-                    disabled={isEditItem?.edit}
-                  >
-                    comprado
-                  </button>
-                </div>
+                )}
+                <button
+                  onClick={() => console.log("COMPLETE:", idx, item)}
+                  disabled={isEditItem?.edit}
+                >
+                  comprado
+                </button>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </ul>
 
       {items?.length < 1 && <p>Nenhum item... 👀</p>}
